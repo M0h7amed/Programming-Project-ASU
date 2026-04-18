@@ -7,5 +7,6 @@ int main()
      cout<<5+5<<endl;
     cout<<"Peter "<<endl;
     cout<<"your are mohamed"<<endl;
+    cout<<"I'm peter"<<endl;
     return 0;
 }
