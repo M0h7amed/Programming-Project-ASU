@@ -1,5 +1,10 @@
 #include <iostream>
+#include <math.h>
 using namespace std;
+int function(double x)
+{
+    return pow(x,2);
+}
 int main()
 {
     cout<<"Mohamed"<<endl;
@@ -9,5 +14,6 @@ int main()
     cout<<"your are mohamed"<<endl;
     cout<<"I'm peter"<<endl;
     //how to write a code Note: this is a comment in main program
+    cout<<function(10)<<endl;
     return 0;
 }
