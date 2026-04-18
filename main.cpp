@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+
 using namespace std;
 int function(double x)
 {
@@ -16,5 +17,8 @@ int main()
     //how to write a code Note: this is a comment in main program
     cout<<function(10)<<endl;
     cout<<"Mohamed ali"<<endl;
+    cout<<"Mohamed "<<endl;
+    cout<<function(20)<<endl;
+    
     return 0;
 }
