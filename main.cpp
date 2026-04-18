@@ -15,9 +15,7 @@ int main()
     cout<<"your are mohamed"<<endl;
     cout<<"I'm peter"<<endl;
     //how to write a code Note: this is a comment in main program
-    cout<<function(10)<<endl;
-    cout<<"Mohamed ali"<<endl;
-    cout<<"Mohamed "<<endl;
+    
     cout<<function(20)<<endl;
     
     return 0;
