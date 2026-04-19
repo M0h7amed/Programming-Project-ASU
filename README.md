@@ -19,4 +19,4 @@ The program is divided into two primary optimization modules:
 * **Language:** C++
 * **Programming Concepts:** Object-Oriented Programming (OOP), Custom Classes (Materials, Motors, Gearboxes), Iterative Loops, Conditional Logic.
 * **Engineering Concepts:** Mechanical Stress Analysis, Parametric Optimization, Actuator Sizing.
-* **Collaboration:** Version control using Git and GitHub workflows.
+
