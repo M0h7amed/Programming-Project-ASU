@@ -1,22 +1,18 @@
+# Part 2: Motor and Gearbox Selection Optimization
 
-# Single-Link Robot Design and Optimization 🤖⚙️
+## Contributors
+* Essam Mohamed
+* Yousef Yasser
 
-## Overview
-This project is a C++ application developed to automate the structural design and actuator selection for a one-link robot actuated by a rotating DC motor. The program bridges mechanical engineering principles with algorithmic problem-solving to ensure the robot is both safe and cost-effective.
+## Objective
+This branch implements the second core module of the Single-Link Robot project. It focuses on selecting the most efficient motor and gearbox combination from a predefined database based on the required torque, required speed, and a specific optimization priority.
 
-## Core Features
-The program is divided into two primary optimization modules:
+## Key Implementations
+* Actuator Database Integration: Managed the data structures representing the available motors and gearboxes, including their physical specifications (mass, diameter, width, torque, speed, gear ratio, and efficiency).
+* Required Parameter Calculations: Programmed the logic to calculate the required torque based on the link's finalized dimensions, payload mass, and angular acceleration.
+* Filtering Algorithms: Created the logic to iterate through the database and filter out any motor-gearbox pairs that do not meet the minimum required output torque and output speed.
+* Cost Function Optimization: Implemented an algorithm to evaluate all valid pairs using a custom cost function (minimizing a combination of mass, diameter, and width) to select the absolute best combination.
 
-* **Part 1: Stress Analysis and Link Optimization**
-  * Calculates bending moments and maximum stress considering the link's weight, payload mass, and inertial forces from angular acceleration.
-  * Utilizes an iterative loop to automatically reduce link dimensions (rectangular or circular cross-sections) by 1% per iteration until the stress falls safely just below the material's yield strength.
-* **Part 2: Motor and Gearbox Selection**
-  * Computes the required torque and speed for the optimized link.
-  * Uses searching and sorting algorithms to filter a predefined database of motors and gearboxes.
-  * Selects the optimal combination by minimizing a custom cost function based on component mass, diameter, and width.
-
-## Technical Skills & Concepts Applied
-* **Language:** C++
-* **Programming Concepts:** Object-Oriented Programming (OOP), Custom Classes (Materials, Motors, Gearboxes), Iterative Loops, Conditional Logic.
-* **Engineering Concepts:** Mechanical Stress Analysis, Parametric Optimization, Actuator Sizing.
+## Output Ready for Integration
+The module successfully outputs the optimal motor-gearbox combination and its exact specifications. This seamlessly links with Part 1 and completes the final stage of the program's automated design process.
 
