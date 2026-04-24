@@ -1,0 +1,9 @@
+ cast iron |130|7.3
+ copper nickel|130|8.94
+ brass|200|8.73
+ Aluminum|241|2.7
+ steel|247|7.58
+ acrylic|72|1.16
+ copper|70|8.92
+ stainless steel|275|7.86
+ Tungsten|941|19.25
