@@ -3,6 +3,7 @@
 #include <cmath>
 #include<fstream>
 #include "classes.h"
+#include "Functions.h"
 #include <vector>
 
 using namespace std;
@@ -11,7 +12,7 @@ using namespace std;
 
 const double g = 9.81, pi = 3.14159;
 
-//Classes
+
 
 
 
@@ -24,13 +25,9 @@ struct Combination
     float cost;
 };
 
-float computeCost(const Motor& m, const Gearbox& g)
-{
-    float total_mass     = m.mass_kg     + g.mass_kg;
-    float total_diameter = m.diameter_mm + g.diameter_mm;
-    float total_width    = m.width_mm    + g.width_mm;
-    return total_mass + total_diameter / 100.0 + total_width / 100.0;
-}
+
+
+
 
 
 //functions
@@ -72,13 +69,17 @@ double Inertia(int type, double b, double h, double r)
     cout<<"choose cross section type:\n 1- rectangular \n 2- circler \n " ;
     cin>>type;
 
-    double L,b,h,r,mp,alpha = 0;
+    double L,b,h,r,mp,ml,omega_required,alpha_max = 0;
                 cout << "Link Length L (m): ";
                 cin >> L;
                 cout << "Payload mass mp (kg): ";
                 cin >> mp;
-                cout << "Max angular acceleration alpha (rad/s2): ";
-                cin >> alpha;
+                cout << "Enter link mass  ml (kg): ";
+                cin >> ml;
+                cout << "Max angular acceleration alpha_max (rad/s2): ";
+                cin >> alpha_max;
+                cout << "Enter required output speed Omega (RPM): ";
+                 cin >> omega_required;
 
                 if (type == 1)
                     {
@@ -91,14 +92,15 @@ double Inertia(int type, double b, double h, double r)
                     cin >> r ;
                 }
     bool optimized = false ;
-    double stress, ml,c,density ;
+    double stress,c,density ;
 
     while(!optimized)
     {
 
     ml = Masslink(type,b,h,L,r,density);
 
-    double M = (ml*g*(L/2))+(mp*g*L)+(ml*pow((L/2),2)*alpha)+(mp*pow(L,2)*alpha); //output is bending moment(N.m)
+    double M = (ml*g*(L/2))+(mp*g*L)+(ml*pow((L/2),2)*alpha_max)+(mp*pow(L,2)*alpha_max
+); //output is bending moment(N.m)
     double I = Inertia(type,b,h,r);
 
     if (type==1)
@@ -151,7 +153,7 @@ else
 {
     cout<<"final dimensions : "<<r<<"m" ;
 }
-
+ float T_required =(ml*g*(L/2))+(mp*g*L+ml*(L/2)*(L/2)*alpha_max)+(mp*L*L*alpha_max);
 cout<<"\nfinal link mass : "<<ml<<"Kg" ;
 cout<<"\nfinal stress : "<<stress<<"Mpa" ;
   }
@@ -171,7 +173,9 @@ cout<<"\nfinal stress : "<<stress<<"Mpa" ;
 
 
 int main()
+
 {
+    float ml,L,mp,alpha_max,omega_required;
     // user inputs for design
    int currentCount = 0;
     Material* database = 0;
@@ -278,6 +282,7 @@ break;
 
 
 
+// Part 2 - Motor and Gearbox Selection Optimization
 
 vector<Motor> motors = {
         Motor("Maxon EC-i 40 (70W)",  0.180, 8500, 0.340, 40.0, 73.0),
@@ -291,17 +296,20 @@ vector<Motor> motors = {
         Gearbox("Maxon GP 42 C (ratio 26:1)",  26.0, 0.72, 0.370, 42.0, 49.5)
     };
 
+
+
+
     cout <<"------------------------------------------------------\n";
     cout << "   PART 2 - Motor & Gearbox Selection Optimization\n";
     cout <<"------------------------------------------------------\n";
 
-    float ml,L,mp,alpha_max,omega_required;
-
-
     
 
 
-    float T_required =(ml*g*(L/2))+(mp*g*L+ml*(L/2)*(L/2)*alpha_max)+(mp*L*L*alpha_max);
+    float T_required;
+
+
+   
 
     cout <<"------------------------------------------------------\n\n";
     cout << " Required Torque  : " << T_required    <<endl;
