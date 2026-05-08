@@ -242,14 +242,18 @@ int main()
   //assign a vector named "motors_vector"
     {
         Motor("Maxon EC-i 40 (70W)",  0.180f, 8500, 0.340f, 40.0f, 73.0f),
-        Motor("Maxon RE 35 (90W)",    0.253f, 6500, 0.530f, 35.0f, 94.0f)
+        Motor("Maxon RE 35 (90W)",    0.253f, 6500, 0.530f, 35.0f, 94.0f),
+        Motor("Maxon DCX 26 l (40W)",   0.0469f, 10600, 0.131f, 26.0f, 57.0f)
+        //asigning : n=name, t=torque_Nm, s=speed_rpm, m=mass_kg, d=diameter_mm, w=width_mm in motor constructor
     };
-                                                                         // 2 motors and 2 gearboxes are defined 
+                                                                                                                  // 3 motors and 3 gearboxes are defined 
     vector<Gearbox> gearboxes_vector =
     //assign a vector named "gearboxes_vector"
     {
         Gearbox("Maxon GP 32 C (ratio 14:1)", 14.0f, 0.75f, 0.210f, 32.0f, 31.5f),
-        Gearbox("Maxon GP 42 C (ratio 26:1)", 26.0f, 0.72f, 0.370f, 42.0f, 49.5f)
+        //asigning : n=name, R=ratio, e=efficiency, m=mass_kg, d=diameter_mm, w=width_mm in gearbox constructor
+        Gearbox("Maxon GP 42 C (ratio 26:1)", 26.0f, 0.72f, 0.370f, 42.0f, 49.5f),
+        Gearbox(" Maxon GPX 26 (ratio 16:1) 2 Stages",  16.0f, 0.81f, 0.090f, 26.0f, 35.0f)
     };
 
     cout << "\n------------------------------------------------------\n";
@@ -299,7 +303,7 @@ for (const auto& motor : motors_vector)//means for each motor in the motors_vect
 if (valid_pairs.empty()) {
     // No combination satisfied both torque and speed requirements
     cout << "\n  No valid motor-gearbox combination found.\n"
-         << "  Consider motors with higher rated torque or larger gear ratios.\n";
+         << "  Consider motors with higher rated torque or larger gear ratios.\n\n\n\n";
 } else {
     // Find the lowest cost among all approved combinations
     Combination best = valid_pairs[0]; // start by assuming first valid pair is best
@@ -308,9 +312,9 @@ if (valid_pairs.empty()) {
 
     // Print the winner
     cout << "\n  OPTIMAL COMBINATION (lowest cost among valid pairs)\n";
-    best.motor->show();
+    (*best.motor).show();
     cout << "\n";  //follow the address of the motor and gearbox in the best combination and call the show() function to display their data
-    best.gearbox->show();
+    (*best.gearbox).show(); //pointer to the gearbox in the best combination and call the show() function to display its data
     cout << "\n";
     cout << "  Output Torque : " << best.output_torque_Nm << " N·m\n";
     cout << "  Output Speed  : " << best.output_speed_rpm << " RPM\n";
