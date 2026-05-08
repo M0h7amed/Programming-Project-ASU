@@ -7,4 +7,8 @@
  copper|70|8.92
  stainless steel|275|7.86
  Tungsten|941|19.25
-
+2|3|4
+|344353|2153
+23|234|234
+essam el7araq|23|23
+essam elga7ed |23|50

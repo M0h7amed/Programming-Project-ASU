@@ -38,9 +38,9 @@ double Inertia(int type, double b, double h, double r)
 }
 
 
-void design(Material m, float& T_required_out, float& omega_required_out)
+void design(Material m, float& T_required_out, float& omega_required_out)//function to optimize the design of the link based on the material selected by the user and the requirements of torque and speed
 {
-    bool type;
+    int type;
     cout << "Choose cross-section type:\n 1- Rectangular\n 2- Circular\n";
     cin  >> type;
 
@@ -61,13 +61,21 @@ void design(Material m, float& T_required_out, float& omega_required_out)
     cout << "Enter required output speed Omega (RPM): ";     
               cin >> omega_required;
 
-
-    if (type == 1) {
-        cout << "Initial Width b and Height h (m): ";
-        cin  >> b >> h;
-    } else {
-        cout << "Initial Radius r (m): ";
-        cin  >> r;
+//switch case to ask for initial dimensions based on the type of cross section selected by the user
+    switch (type) 
+    {
+        case 1:
+            cout << "Initial Width b and Height h (m): ";
+            cin  >> b >> h;
+            break;
+        case 2:
+            cout << "Initial Radius r (m): ";
+            cin  >> r;
+            break;
+        default:
+            cerr << "Invalid choice.\n";
+          break;
+    
     }
 
     bool   optimized = false;
@@ -93,7 +101,7 @@ void design(Material m, float& T_required_out, float& omega_required_out)
 
         if (stress > m.yieldStrength * 0.98) {
             if (type == 1) { b *= 1.01; h *= 1.01; }
-            else             r *= 1.01;
+            else             r *= 1.01; //لازم يتعدل يا اخونا 
         } else if (stress < m.yieldStrength * 0.95) {
             if (type == 1) { b *= 0.95; h *= 0.95; }
             else             r *= 0.95;
@@ -126,7 +134,7 @@ void design(Material m, float& T_required_out, float& omega_required_out)
 }
 
 
-void savefile(Material* database, int currentCount)
+void savefile(Material* database, int currentCount)//function to save the materials in the database to a text file named "saved materials.txt" when the user adds a new material to the database
 {
     ofstream file("saved materials.txt");
     if (file.is_open()) {
@@ -190,7 +198,7 @@ int main()
     }
 
 
-    int choice;
+    int choice;//variable to ask the user to select between displaying the materials in the database or adding a new material to the database
   
     cout << "\nMaterial Selection\n";
     cout << "1- Display All Materials\n";
@@ -200,7 +208,7 @@ int main()
 
     switch (choice)
     {
-        case 1:
+        case 1://case 1 to display all materials in the database and ask the user to select one for design optimization
         {
             for (int i = 0; i < currentCount; i++)
                 cout << i + 1 << ". " << database[i].name << "\n";
@@ -210,7 +218,7 @@ int main()
             design(database[selection - 1], T_required, omega_required);
             break;
         }
-        case 2:
+        case 2://case 2 to add a new material to the database and then optimize the design based on the new material added by the user
         {
             Material* temp = new Material[currentCount + 1];
             for (int i = 0; i < currentCount; i++) temp[i] = database[i];
