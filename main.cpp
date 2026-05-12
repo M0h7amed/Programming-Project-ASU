@@ -146,10 +146,11 @@ void savefile(Material* database, int currentCount)//function to save the materi
     }
 }
 
-
+bool try_again = 1; //try again variable to ask the user if they want to try again with different material selection and design optimization
 int main()
 {
-    
+    while (try_again==1)//while loop to allow the user to try again with different material selection and design optimization
+    {
     float T_required = 0, omega_required = 0;
 
     int currentCount = 0;
@@ -328,6 +329,8 @@ if (valid_pairs.empty()) {
     cout << "  Output Speed  : " << best.output_speed_rpm << " RPM\n";
     cout << "  Total Cost    : " << best.cost             << "\n";
 }
-
+                   cout<<"do you want to try again? (1 for yes, 0 for no): ";
+                    cin>>try_again;                  //try again variable to ask the user if they want to try again with different material selection and design optimization
+    }
 return 0;
 }
