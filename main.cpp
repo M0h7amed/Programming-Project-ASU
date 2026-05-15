@@ -119,7 +119,8 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
 
         stress = (M * c / I) / 1e6; // Pa → MPa
 
-       switch(type)
+       switch(type) 
+       // adjust dimensions based on whether the stress exceeds the yield strength or is significantly below it, with a 5% increment or decrement to find an optimal design that meets the requirements without being over-engineered
        {
            case 1:
                if (stress > m.yieldStrength) {
@@ -254,7 +255,7 @@ int main()
             string n;
             double y, d;
             cout << "Enter material name: ";
-            cin.ignore();
+            cin.ignore(); // to clear the newline character from the input buffer before reading the material name
             getline(cin, n);
             cout << "Enter yield strength (MPa): "; cin >> y;
             cout << "Enter density (g/cm³): ";      cin >> d;
