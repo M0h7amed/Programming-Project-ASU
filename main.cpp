@@ -25,16 +25,36 @@ struct Combination
 double Masslink(int type, double b, double h, double L, double r, double density)
 {
     double Density = density * 1000; // g/cm³ → kg/m³
-    double volume  = (type == 1) ? (b * h * L) : (pi * pow(r, 2) * L);
+    double volume ;
+    switch(type)
+    {
+        case 1:
+            volume = b * h * L;
+            break;
+        case 2:
+            volume = pi * pow(r, 2) * L;
+            break;
+        default:
+            cout << "Invalid cross-section type.\n";
+            return 0;
+    }
     return Density * volume;
 }
 
 double Inertia(int type, double b, double h, double r)
 {
-    if (type == 1)
-        return (b * pow(h, 3)) / 12;
-    else
-        return (pi * pow(r, 4)) / 4;
+   switch(type)
+   {
+       case 1:
+           return (b * pow(h, 3)) / 12.0;
+           break; // Rectangular section
+       case 2:
+           return (pi * pow(r, 4)) / 4.0; 
+           break;// Circular section
+       default:
+           cout << "Invalid cross-section type.\n";
+              return 0;
+   }
 }
 
 
@@ -73,7 +93,7 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
             cin  >> r;
             break;
         default:
-            cerr << "Invalid choice.\n";
+            cout << "Invalid choice.\n";
           break;
     
     }
@@ -99,15 +119,27 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
 
         stress = (M * c / I) / 1e6; // Pa → MPa
 
-        if (stress > m.yieldStrength * 0.98) {
-            if (type == 1) { b *= 1.01; h *= 1.01; }
-            else             r *= 1.01; //لازم يتعدل يا اخونا 
-        } else if (stress < m.yieldStrength * 0.95) {
-            if (type == 1) { b *= 0.95; h *= 0.95; }
-            else             r *= 0.95;
-        } else {
-            optimized = true;
-        }
+       switch(type)
+       {
+           case 1:
+               if (stress > m.yieldStrength) {
+                   b *= 1.05; h *= 1.05; // increase dimensions by 5%
+               } else if(stress < 0.8 * m.yieldStrength) {
+                   b *= 0.95; h *= 0.95; // decrease dimensions by 5% if stress is significantly below yield strength
+               } else {
+                   optimized = true;
+               }
+               break;
+           case 2:
+               if (stress > m.yieldStrength) {
+                   r *= 1.05; // increase radius by 5%
+               } else if(stress < 0.8 * m.yieldStrength) {
+                   r *= 0.95; // decrease radius by 5% if stress is significantly below yield strength
+               } else {
+                   optimized = true;
+               }
+               break;
+       }
     }
 
     float T_required = static_cast<float>(
@@ -118,10 +150,15 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
     );
 
     cout << "\nOptimized results:\n";
-    if (type == 1)
-        cout << "Final dimensions : b = " << b << " m,  h = " << h << " m\n";
-    else
-        cout << "Final dimensions : r = " << r << " m\n";
+switch(type)
+    {
+        case 1:
+            cout << "Final dimensions : b = " << b << " m,  h = " << h << " m\n";
+            break;
+        case 2:
+            cout << "Final dimensions : r = " << r << " m\n";
+            break;
+    }
 
     cout << "Final link mass  : " << ml     << " kg\n";
     cout << "Final stress     : " << stress << " MPa\n";
