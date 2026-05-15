@@ -255,7 +255,11 @@ int main()
             string n;
             double y, d;
             cout << "Enter material name: ";
+<<<<<<< Updated upstream
             cin.ignore(); // to clear the newline character from the input buffer before reading the material name
+=======
+            cin.ignore();//to ignore the newline character left in the input buffer after reading the choice variable
+>>>>>>> Stashed changes
             getline(cin, n);
             cout << "Enter yield strength (MPa): "; cin >> y;
             cout << "Enter density (g/cm³): ";      cin >> d;
