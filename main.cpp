@@ -22,7 +22,7 @@ int main()
     while (try_again==1)
     {
      int aa=1;
-    while(aa=1){
+    while(aa==1){
     float T_required = 0, omega_required = 0;
 
     int currentCount = 0;
