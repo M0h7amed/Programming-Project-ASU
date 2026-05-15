@@ -6,7 +6,7 @@ using namespace std;
 
 
 
-float computeCost(const Motor& m, const Gearbox& g)
+float computeCost(const Motor& m, const Gearbox& g) //cost finding 
 {
     float total_mass     = m.mass_kg     + g.mass_kg;
     float total_diameter = m.diameter_mm + g.diameter_mm;

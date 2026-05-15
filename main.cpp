@@ -11,14 +11,7 @@ using namespace std;
 // Constants
 const double g = 9.81, pi = 3.14159;
 
-struct Combination
-{
-    const Motor*   motor;
-    const Gearbox* gearbox;
-    float output_torque_Nm;  //like an ID for each competitor
-    float output_speed_rpm;
-    float cost;
-};
+
 
 
 
@@ -75,7 +68,7 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
     cout << "Enter link mass ml (kg): ";   
               cin >> ml;
 
-    cout << "Max angular acceleration alpha_max (rad/s²): "; 
+    cout << "Max angular acceleration alpha_max (rad/s2): "; 
               cin >> alpha_max;
 
     cout << "Enter required output speed Omega (RPM): ";     
@@ -142,7 +135,7 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
        }
     }
 
-    float T_required = static_cast<float>(
+    float T_required = (
         (ml * g * (L / 2))
       + (mp * g * L)
       + (ml * (L / 2) * (L / 2) * alpha_max)
@@ -167,7 +160,7 @@ switch(type)
 
    
     T_required_out     = T_required;
-    omega_required_out = static_cast<float>(omega_required);
+    omega_required_out = (omega_required);
 }
 
 
@@ -257,7 +250,7 @@ int main()
             cin.ignore();
             getline(cin, n);
             cout << "Enter yield strength (MPa): "; cin >> y;
-            cout << "Enter density (g/cm³): ";      cin >> d;
+            cout << "Enter density (g/cm3): ";      cin >> d;
 
             temp[currentCount].setData(n, y, d);
             delete[] database;
@@ -273,34 +266,35 @@ int main()
 
     delete[] database;
 
-  
+  //part 2 - motor and gearbox selection optimization
+
     vector<Motor> motors_vector =
   //assign a vector named "motors_vector"
     {
-        Motor("Maxon EC-i 40 (70W)",  0.180f, 8500, 0.340f, 40.0f, 73.0f),
-        Motor("Maxon RE 35 (90W)",    0.253f, 6500, 0.530f, 35.0f, 94.0f),
-        Motor("Maxon DCX 26 l (40W)",   0.0469f, 10600, 0.131f, 26.0f, 57.0f)
+        Motor("Maxon EC-i 40 (70W)",  0.180, 8500, 0.340, 40.0, 73.0),
+        Motor("Maxon RE 35 (90W)",    0.253, 6500, 0.530, 35.0f, 94.0),
+        Motor("Maxon DCX 26 l (40W)",   0.0469, 10600, 0.131, 26.0, 57.0)
         //asigning : n=name, t=torque_Nm, s=speed_rpm, m=mass_kg, d=diameter_mm, w=width_mm in motor constructor
     };
                                                                                                                   // 3 motors and 3 gearboxes are defined 
     vector<Gearbox> gearboxes_vector =
     //assign a vector named "gearboxes_vector"
     {
-        Gearbox("Maxon GP 32 C (ratio 14:1)", 14.0f, 0.75f, 0.210f, 32.0f, 31.5f),
+        Gearbox("Maxon GP 32 C (ratio 14:1)", 14.0, 0.75, 0.210, 32.0, 31.5),
         //asigning : n=name, R=ratio, e=efficiency, m=mass_kg, d=diameter_mm, w=width_mm in gearbox constructor
-        Gearbox("Maxon GP 42 C (ratio 26:1)", 26.0f, 0.72f, 0.370f, 42.0f, 49.5f),
-        Gearbox(" Maxon GPX 26 (ratio 16:1) 2 Stages",  16.0f, 0.81f, 0.090f, 26.0f, 35.0f)
+        Gearbox("Maxon GP 42 C (ratio 26:1)", 26.0, 0.72, 0.370, 42.0, 49.5),
+        Gearbox(" Maxon GPX 26 (ratio 16:1) 2 Stages",  16.0, 0.81, 0.090, 26.0, 35.0)
     };
 
     cout << "\n------------------------------------------------------\n";
-    cout << "   PART 2 - Motor & Gearbox Selection Optimization\n";
+    cout << "            Motor & Gearbox Selection  \n";
     cout << "------------------------------------------------------\n";
-    cout << " Required Torque : " << T_required    << " N·m\n";//from user input in part 1 baseed on optimized design of ml
+    cout << " Required Torque : " << T_required    << " N.m\n";//from user input in part 1 baseed on optimized design of ml
     cout << " Required Speed  : " << omega_required << " RPM\n";//from user input in part 1
     cout << "------------------------------------------------------\n";
 
-    vector<Combination> valid_pairs;
-    cout << "\n  Evaluating all motor-gearbox combinations...\n\n";
+    vector<Combination> valid_pairs; //define a vector of type Combination to store the valid motor-gearbox pairs that meet the requirements of torque and speed
+        cout << "\n  Evaluating all motor-gearbox combinations...\n\n";
 
     // Test every possible motor + gearbox combination 
 for (const auto& motor : motors_vector)//means for each motor in the motors_vector, do the following loop for each gearbox in the gearboxes_vector
@@ -315,7 +309,7 @@ for (const auto& motor : motors_vector)//means for each motor in the motors_vect
         // Print the results for this pair
         cout << "---------------------------------------------\n";
         cout << "  " << motor.name << " + " << gearbox.name << "\n";
-        cout << "  Output Torque : " << T_output << " N·m\n";
+        cout << "  Output Torque : " << T_output << " N.m\n";
         cout << "  Output Speed  : " << w_output << " RPM\n";
         cout << "  Cost          : " << cost     << "\n";
 
@@ -336,11 +330,13 @@ for (const auto& motor : motors_vector)//means for each motor in the motors_vect
 }
 
 // After testing all pairs, pick the best one
-if (valid_pairs.empty()) {
+if (valid_pairs.empty())
+{
     // No combination satisfied both torque and speed requirements
     cout << "\n  No valid motor-gearbox combination found.\n"
          << "  Consider motors with higher rated torque or larger gear ratios.\n\n\n\n";
-} else {
+} 
+else {
     // Find the lowest cost among all approved combinations
     Combination best = valid_pairs[0]; // start by assuming first valid pair is best
     for (const auto& combo : valid_pairs)
@@ -356,7 +352,7 @@ if (valid_pairs.empty()) {
     cout << "  Output Speed  : " << best.output_speed_rpm << " RPM\n";
     cout << "  Total Cost    : " << best.cost             << "\n";
 }
-                   cout<<"do you want to try again? (1 for yes, 0 for no): ";
+                   cout<<"Do you want to try again ? (1 for yes, 0 for no): \n";
                     cin>>try_again;                  //try again variable to ask the user if they want to try again with different material selection and design optimization
     }
 return 0;

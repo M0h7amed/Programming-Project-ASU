@@ -80,3 +80,11 @@ public:
     }
 };
 
+struct Combination
+{
+    const Motor*   motor;
+    const Gearbox* gearbox;
+    float output_torque_Nm;  //like an ID for each competitor
+    float output_speed_rpm;
+    float cost;
+};
