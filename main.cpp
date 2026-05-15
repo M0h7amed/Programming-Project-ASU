@@ -155,7 +155,7 @@ switch(type)
 
     cout << "Final link mass  : " << ml     << " kg\n";
     cout << "Final stress     : " << stress << " MPa\n";
-    cout << "Required torque  : " << T_required    << " N.m\n";
+    cout << "Required torque  : " << T_required    << " N.m"<<endl;
     cout << "Required speed   : " << omega_required << " RPM\n";
 
    
@@ -247,12 +247,12 @@ int main()
             string n;
             double y, d;
             cout << "Enter material name: ";
-            cin.ignore();
-            getline(cin, n);
+            cin.ignore(); //to clear the newline character left in the input buffer after reading the choice variable 
+            getline(cin, n);//to allow the user to enter a material name with spaces
             cout << "Enter yield strength (MPa): "; cin >> y;
             cout << "Enter density (g/cm3): ";      cin >> d;
 
-            temp[currentCount].setData(n, y, d);
+            temp[currentCount].setData(n, y, d);//to add the new material to the temporary database and then save it to the text file and optimize the design based on the new material added by the user
             delete[] database;
             database = temp;
             currentCount++;
