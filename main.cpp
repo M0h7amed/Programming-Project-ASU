@@ -171,17 +171,7 @@ switch(type)
 }
 
 
-void savefile(Material* database, int currentCount)//function to save the materials in the database to a text file named "saved materials.txt" when the user adds a new material to the database
-{
-    ofstream file("saved materials.txt");
-    if (file.is_open()) {
-        for (int i = 0; i < currentCount; i++)
-            file << database[i].name << "|"
-                 << database[i].yieldStrength << "|"
-                 << database[i].density << "\n";
-        file.close();
-    }
-}
+
 
 bool try_again = 1; //try again variable to ask the user if they want to try again with different material selection and design optimization
 int main()
