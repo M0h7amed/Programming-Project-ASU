@@ -4,9 +4,9 @@
 #pragma once
 using namespace std;
 
+const double g = 9.81, pi = 3.14159;
 
-
-float computeCost(const Motor& m, const Gearbox& g) //cost finding 
+float computeCost(const Motor& m, const Gearbox& g) //cost finding
 {
     float total_mass     = m.mass_kg     + g.mass_kg;
     float total_diameter = m.diameter_mm + g.diameter_mm;
@@ -27,7 +27,7 @@ void savefile(Material* database, int currentCount)//function to save the materi
     }
 }
 
-
+//function to calculate the link's mass
 double Masslink(int type, double b, double h, double L, double r, double density)
 {
     double Density = density * 1000; // g/cm³ → kg/m³
@@ -41,12 +41,13 @@ double Masslink(int type, double b, double h, double L, double r, double density
             volume = pi * pow(r, 2) * L;
             break;
         default:
-            cout << "Invalid cross-section type.\n";
-            return 0;
+            break;
     }
     return Density * volume;
 }
 
+
+//function to calculate the link's inertia
 double Inertia(int type, double b, double h, double r)
 {
    switch(type)
@@ -55,40 +56,72 @@ double Inertia(int type, double b, double h, double r)
            return (b * pow(h, 3)) / 12.0;
            break; // Rectangular section
        case 2:
-           return (pi * pow(r, 4)) / 4.0; 
+           return (pi * pow(r, 4)) / 4.0;
            break;// Circular section
        default:
-           cout << "Invalid cross-section type.\n";
-              return 0;
+              break;
    }
 }
 
 
-void design(Material m, float& T_required_out, float& omega_required_out)//function to optimize the design of the link based on the material selected by the user and the requirements of torque and speed
+//function to optimize the design of the link based on the material selected by the user and the requirements of torque and speed
+void design(Material m, float& T_required_out, float& omega_required_out)
 {
     int type;
-    cout << "Choose cross-section type:\n 1- Rectangular\n 2- Circular\n";
+    cout << "1- Rectangular\n2- Circular\nChoose cross-section type: ";
     cin  >> type;
 
+     while(type>2||type<1){
+        cout<<"\ninvalid input\n\n";
+        cout << "1- Rectangular\n2- Circular\nChoose cross-section type: ";
+        cin >> type;
+      }
+
     double L, b , h , r , mp, ml, omega_required, alpha_max;
+     cout << "\n-------------------------------------------------------------------\n\n";
+    cout<<"extra inputs: \n\n";
 
-    cout << "Link Length L (m): ";
+
+
+    while (int s=1)
+  {
+
+      cout << "Link Length L (m): ";
               cin >> L;
+              while(L<0){
+                cout<<"length cannot be negative\n";
+                cout<<"Link Length L (m): ";
+                cin >> L;
+              }
 
-    cout << "Payload mass mp (kg): ";    
+    cout << "Payload mass mp (kg): ";
               cin >> mp;
+              while(mp<0){
+                cout<<"mass cannot be negative\n";
+                cout<<"Payload mass mp (kg): ";
+                cin >> mp;
+              }
 
-    cout << "Enter link mass ml (kg): ";   
+    cout << "Enter link mass ml (kg): ";
               cin >> ml;
+              while(ml<0){
+                cout<<"mass cannot be negative\n";
+                cout<<"Enter link mass ml (kg): ";
+                cin >> ml;
+              }
 
-    cout << "Max angular acceleration alpha_max (rad/s2): "; 
+    cout << "Max angular acceleration alpha_max (rad/s2): ";
               cin >> alpha_max;
 
-    cout << "Enter required output speed Omega (RPM): ";     
+
+    cout << "Enter required output speed Omega (RPM): ";
               cin >> omega_required;
 
+break;
+ }
+
 //switch case to ask for initial dimensions based on the type of cross section selected by the user
-    switch (type) 
+    switch (type)
     {
         case 1:
             cout << "Initial Width b and Height h (m): ";
@@ -101,18 +134,20 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
         default:
             cout << "Invalid choice.\n";
           break;
-    
+
     }
 
+
+    //make sure that the input dimensions are optimized or not
     bool   optimized = false;
     double stress = 0, c = 0;
-
-    
     double density = m.density;
 
+
+    //takes the optimized data into the calculations
     while (!optimized)
     {
-       
+
         ml = Masslink(type, b, h, L, r, density);
 
         double M = (ml * g * (L / 2))
@@ -125,6 +160,8 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
 
         stress = (M * c / I) / 1e6; // Pa → MPa
 
+
+       //link dimension optimization
        switch(type)
        {
            case 1:
@@ -147,21 +184,25 @@ void design(Material m, float& T_required_out, float& omega_required_out)//funct
                break;
        }
     }
-
+    //calculate required torque
     float T_required = (
         (ml * g * (L / 2))
       + (mp * g * L)
       + (ml * (L / 2) * (L / 2) * alpha_max)
       + (mp * L * L * alpha_max)
     );
-
+     cout << "\n-------------------------------------------------------------------\n";
+      cout << "-------------------------------------------------------------------\n";
     cout << "\nOptimized results:\n";
+
+
+    //showing the results based on the chosen cross section
 switch(type)
     {
-        case 1:
+        case 1: //rectangular cross section
             cout << "Final dimensions : b = " << b << " m,  h = " << h << " m\n";
             break;
-        case 2:
+        case 2: //circular cross section
             cout << "Final dimensions : r = " << r << " m\n";
             break;
     }
@@ -169,9 +210,13 @@ switch(type)
     cout << "Final link mass  : " << ml     << " kg\n";
     cout << "Final stress     : " << stress << " MPa\n";
     cout << "Required torque  : " << T_required    << " N.m\n";
+    if(omega_required<0){
+         cout << "Required speed   : " << omega_required << " RPM  ("<<omega_required*-1<<" RPM CW)\n";
+    }else{
     cout << "Required speed   : " << omega_required << " RPM\n";
+    }
 
-   
     T_required_out     = T_required;
     omega_required_out = (omega_required);
 }
+
