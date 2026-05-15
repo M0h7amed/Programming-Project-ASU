@@ -24,7 +24,7 @@ public:
 
     {
         cout << "  Motor      : " << name << "\n";
-        cout << "  Torque     : " << torque_Nm   << " N'm\n";
+        cout << "  Torque     : " << torque_Nm   << " N.m\n";
         cout << "  Speed      : " << speed_rpm   << " RPM\n";
         cout << "  Mass       : " << mass_kg     << " kg\n";
         cout << "  Diameter   : " << diameter_mm << " mm\n";

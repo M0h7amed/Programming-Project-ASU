@@ -155,7 +155,7 @@ switch(type)
 
     cout << "Final link mass  : " << ml     << " kg\n";
     cout << "Final stress     : " << stress << " MPa\n";
-    cout << "Required torque  : " << T_required    << " N·m\n";
+    cout << "Required torque  : " << T_required    << " N.m\n";
     cout << "Required speed   : " << omega_required << " RPM\n";
 
    
@@ -288,10 +288,7 @@ int main()
 
     cout << "\n------------------------------------------------------\n";
     cout << "            Motor & Gearbox Selection  \n";
-    cout << "------------------------------------------------------\n";
-    cout << " Required Torque : " << T_required    << " N.m\n";//from user input in part 1 baseed on optimized design of ml
-    cout << " Required Speed  : " << omega_required << " RPM\n";//from user input in part 1
-    cout << "------------------------------------------------------\n";
+    
 
     vector<Combination> valid_pairs; //define a vector of type Combination to store the valid motor-gearbox pairs that meet the requirements of torque and speed
         cout << "\n  Evaluating all motor-gearbox combinations...\n\n";
@@ -348,7 +345,7 @@ else {
     cout << "\n";  //follow the address of the motor and gearbox in the best combination and call the show() function to display their data
     (*best.gearbox).show(); //pointer to the gearbox in the best combination and call the show() function to display its data
     cout << "\n";
-    cout << "  Output Torque : " << best.output_torque_Nm << " N·m\n";
+    cout << "  Output Torque : " << best.output_torque_Nm << " N.m\n";
     cout << "  Output Speed  : " << best.output_speed_rpm << " RPM\n";
     cout << "  Total Cost    : " << best.cost             << "\n";
 }
