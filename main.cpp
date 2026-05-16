@@ -230,7 +230,7 @@ else {
                    cout<<"Do you want to try again ? (1 for yes, 0 for no): ";
                    int mm;
                     cin>>mm;
-                    if(mm==0){try_again=0;break;}                //try again variable to ask the user if they want to try again with different material selection and design optimization
+                    if(mm!=0){try_again=0;break;}                //try again variable to ask the user if they want to try again with different material selection and design optimization
                      cout << "\n-------------------------------------------------------------------\n";
                       cout << "-------------------------------------------------------------------\n\n";
     };
