@@ -2,7 +2,7 @@
 # Single-Link Robot Design and Optimization 🤖⚙️
 
 ## Overview
-This project is a C++ application developed to automate the structural design and actuator selection for a one-link robot actuated by a rotating DC motor. The program bridges mechanical engineering principles with algorithmic problem-solving to ensure the robot is both safe and cost-effective.
+This project is a C++ application developed to automate the structural design and actuator selection for a one-link robot actuated by a rotating DC motor. 
 
 ## Core Features
 The program is divided into two primary optimization modules:
